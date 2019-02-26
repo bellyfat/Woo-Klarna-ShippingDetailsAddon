@@ -29,7 +29,7 @@ class KlarnaWooAddShippingToCapture{
                 "shipping_info"=> [
                     [
                         "shipping_company"=> "DHL",
-                        "shipping_method"=> "PickupPoint",
+                        "shipping_method"=> "PickUpPoint",
                         "tracking_number"=> "63456415674545679874",
                         "tracking_uri"=> "http://shipping.example/findmypackage?63456415674545679874"
                     ]
