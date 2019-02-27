@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: Woo Klarna Addin Shipping Info
-Plugin URI: https://github.com/mnording/Woo-Klarna-Instant-Shopping
-Description: Adds Klarna Instant shopping button to your product pages
+Plugin Name: Woo Klarna Shipping Info Addon
+Plugin URI: https://github.com/mnording/
+Description: Sends tracking info to Klarna after an order has been captured
 Version: 0.1.0
 Author: mnording10
 Author URI: https://mnording.com
