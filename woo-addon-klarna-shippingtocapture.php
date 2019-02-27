@@ -48,8 +48,8 @@ class KlarnaWooAddShippingToCapture{
     }
     function getTestmode()
     {
-        $testmode = get_option("woo-klarna-instant-shopping");
-        return true;
+        $settings = get_option( 'woocommerce_kco_settings' );
+        return 'yes' === $settings['testmode'];
     }
     function getPostMetaKeyForTrackingId()
     {
