@@ -28,29 +28,25 @@ class KlarnaWooAddShippingToCapture{
         add_options_page('Woo Klarna Shipping Addon', 'Woo Klarna Shipping Addon', 'manage_options', 'woo-klarna-shipping-addon', array($this->settingspage, 'RenderKlarnaSettingsPage'));
     }
     function getMid(){
-        if ($this->getTestmode()) {
+        if ($this->settingspage->getTestmode()) {
             return $this->eutestid;
         }
        return $this->euliveid;
     }
     function getPass(){
-        if ($this->getTestmode()) {
+        if ($this->settingspage->getTestmode()) {
             return $this->eutestpass;
         }
        return $this->eulivepass;
     }
     function getBaseUrl()
     {
-        if ($this->getTestmode()) {
+        if ($this->settingspage->getTestmode()) {
             return "https://api.playground.klarna.com";
         }
         return "https://api.klarna.com";
     }
-    function getTestmode()
-    {
-        $settings = get_option( 'woocommerce_kco_settings' );
-        return 'yes' === $settings['testmode'];
-    }
+    
     function getPostMetaKeyForTrackingId()
     {
         return get_option("woo-klarna-shipping-addon")["trackingidmeta"];

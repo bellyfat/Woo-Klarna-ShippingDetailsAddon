@@ -30,8 +30,8 @@ class WooKlarnaShippingAddonSettingsPage
     }
     function getTestmode()
     {
-        $testmode = get_option("woo-klarna-shipping-addon");
-        return isset($testmode["testmode"]);
+        $settings = get_option('woocommerce_kco_settings');
+        return 'yes' === $settings['testmode'];
     }
     function shouldLogDebug()
     {
