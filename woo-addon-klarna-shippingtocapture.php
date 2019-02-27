@@ -25,23 +25,51 @@ class KlarnaWooAddShippingToCapture{
         add_action('woocommerce_order_status_completed', array($this, 'addShippingToCapture'), 999999);
         
     }
+    function getMid(){
+        if ($this->getTestmode()) {
+            return $this->eutestid;
+        }
+       return $this->euliveid;
+    }
+    function getPass(){
+        if ($this->getTestmode()) {
+            return $this->eutestpass;
+        }
+       return $this->eulivepass;
+    }
+    function getBaseUrl()
+    {
+        if ($this->getTestmode()) {
+            return "https://api.playground.klarna.com";
+        }
+        return "https://api.klarna.com";
+    }
+    function getTestmode()
+    {
+        $testmode = get_option("woo-klarna-instant-shopping");
+        return true;
+    }
+    function getPostMetaKeyForTrackingId()
+    {
+        return '_msunifaun_web-ta_order_consignment_id';
+    }
+    function getTrackingUrl(){
+        return "https://droppbollen.se/spara-paket/?orderid=";
+    }
    function addShippingToCapture($order_id){
         
     $order = wc_get_order($order_id);
     $klanrnaorderid= $order->get_transaction_id();
         $captuereid = get_post_meta( $order_id, '_wc_klarna_capture_id', true );
         $trackingId = get_post_meta($order_id,'_msunifaun_web-ta_order_consignment_id',true);
-        var_dump($captuereid);
-        var_dump($trackingId);
-        
         $client = new \GuzzleHttp\Client();
-        $res = $client->post( "https://api.playground.klarna.com/ordermanagement/v1/orders/".$klanrnaorderid."/captures/".$captuereid."/shipping-info", ['verify' => true, 'auth' => [$this->eutestid, $this->eutestpass], 'json' => [
+        $res = $client->post( $this->getBaseUrl()."/ordermanagement/v1/orders/".$klanrnaorderid."/captures/".$captuereid."/shipping-info", ['verify' => true, 'auth' => [$this->getMid(), $this->getPass()], 'json' => [
                 "shipping_info"=> [
                     [
                         "shipping_company"=> "DHL Freight",
                         "shipping_method"=> "PickUpPoint",
                         "tracking_number"=> $trackingId,
-                        "tracking_uri"=> "https://droppbollen.se/spara-paket/?orderid=".$order_id
+                        "tracking_uri"=> $this->getTrackingUrl().$order_id
                     ]
                 ]
         ], 'headers' => [
