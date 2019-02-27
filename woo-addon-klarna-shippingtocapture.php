@@ -23,7 +23,6 @@ class KlarnaWooAddShippingToCapture{
         $this->euliveid = $gateway_settings["merchant_id_eu"];
         $this->eulivepass = $gateway_settings["shared_secret_eu"];
         add_action('woocommerce_order_status_completed', array($this, 'addShippingToCapture'), 999999);
-        
     }
     function getMid(){
         if ($this->getTestmode()) {
@@ -54,20 +53,26 @@ class KlarnaWooAddShippingToCapture{
         return '_msunifaun_web-ta_order_consignment_id';
     }
     function getTrackingUrl(){
-        return "https://droppbollen.se/spara-paket/?orderid=";
+        return get_option("Woo-klarna-shipping-addon-tracking-link");
+    }
+    function getShippingCompany($order_id){
+            return "DHL Freight";
+    }
+    function getShippingMethod($order_id){
+            return "PickUpPoint";
     }
    function addShippingToCapture($order_id){
         
     $order = wc_get_order($order_id);
     $klanrnaorderid= $order->get_transaction_id();
         $captuereid = get_post_meta( $order_id, '_wc_klarna_capture_id', true );
-        $trackingId = get_post_meta($order_id,'_msunifaun_web-ta_order_consignment_id',true);
+        $trackingId = get_post_meta($order_id,$this->getPostMetaKeyForTrackingId(),true);
         $client = new \GuzzleHttp\Client();
         $res = $client->post( $this->getBaseUrl()."/ordermanagement/v1/orders/".$klanrnaorderid."/captures/".$captuereid."/shipping-info", ['verify' => true, 'auth' => [$this->getMid(), $this->getPass()], 'json' => [
                 "shipping_info"=> [
                     [
-                        "shipping_company"=> "DHL Freight",
-                        "shipping_method"=> "PickUpPoint",
+                        "shipping_company"=> $this->getShippingCompany($order_id),
+                        "shipping_method"=> $this->getShippingMethod($order_id),
                         "tracking_number"=> $trackingId,
                         "tracking_uri"=> $this->getTrackingUrl().$order_id
                     ]
