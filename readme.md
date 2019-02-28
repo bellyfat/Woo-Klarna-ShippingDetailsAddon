@@ -4,6 +4,7 @@
 
 This plugin will add a single feature to your Woocommerce Klarna V3 integration.
 It will take the tracking ID that you have stored on the order, and send that to Klarna.
+More infrmation from Klarna on this page https://developers.klarna.com/resources/order-management/integration-guide/delivery-tracking
 
 **What happens**
 

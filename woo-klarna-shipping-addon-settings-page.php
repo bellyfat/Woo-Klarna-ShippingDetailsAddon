@@ -52,11 +52,6 @@ class WooKlarnaShippingAddonSettingsPage
 </div>
 <?
 }
-function CreateNewButton()
-{
-
-    return $this->buttonGenerator->generateButtonKey();
-}
 function plugin_admin_init()
 {
 
@@ -93,28 +88,6 @@ function plugin_setting_checkbox($key)
 <input name='woo-klarna-shipping-addon[<?php echo $key ?>]' type='checkbox' value='1' <?php checked("1", $options[$key], true) ?> />
 <?php
 
-}
-function plugin_setting_selectpage($key)
-{
-    $options = get_option('woo-klarna-shipping-addon');
-    if (!isset($options[$key])) {
-        $options[$key] = -1;
-    }
-    $args = array(
-        'sort_order' => 'asc',
-        'sort_column' => 'post_title',
-        'parent' => -1,
-        'post_type' => 'page',
-        'post_status' => 'publish'
-    );
-    $pages = get_pages($args);
-
-    echo '<select name="woo-klarna-shipping-addon[' . $key . ']">';
-    foreach ($pages as $page) {
-        $selected = ($options[$key] == $page->ID) ? "selected" : "";
-        echo '<option ' . $selected . ' value="' . $page->ID . '">' . $page->post_title . '</option>';
-    }
-    echo '</select> ';
 }
 }
 ?> 
